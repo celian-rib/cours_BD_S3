@@ -133,8 +133,6 @@ rollback -- Undo changes
 
 > Voir ça comme git, pour valider ses changement il faut commit, et bah ici au lieu de modifier des fichier on modif la BD avec des requêtes.
 
-
-
 #### Bloquage (Transaction concurrency) :
 
 Dans un BD avec 1 seul user :
@@ -148,8 +146,6 @@ Dans une BD avec plusieurs users :
 - Le résultat doit rester clair malgrès tout, c'est pouquoi il y a un **contrôle de l'ordre de passage des transactions**.
 
 > une transaction peut donc être bloquée par une autre si elles touchent au mêmes données. Dans ce cas, une est prioritaire sur l'autre, et l'autre est bloqué tant que la première n'est pas terminée.
-
-
 
 #### Graphe d'attente des transactions :
 
@@ -166,9 +162,6 @@ flowchart LR
 252
 ```
 
-
-
-
 Explication ligne par ligne (du tableau) :
 
 - La transaction de la session 250 est bloquée par la session 355
@@ -182,8 +175,6 @@ Explication ligne par ligne (du tableau) :
 - ...
 
 > `final_blocking_sessions` est l'origine du bloquage
-
-
 
 ##### Graphe d'attente : autre exemple
 
@@ -241,19 +232,13 @@ flowchart LR
     357
 ```
 
-
-
 ## 6/ Procédures stockées
 
 Une procédure est un regroupement de requêtes sql que l'on peut éxécuter ensembles. 
 
 > Voir ça comme un script bah qui lui peut éxécuter plusieurs commande bash, ici c'est pareil mais avec des requêtes sql.
 
-
-
 > A la manière d'une fonction ou d'un scritp bash, une procèdure peut prendre des arguments et simplement être appelée pour être éxécutée.
-
-
 
 **Exemple utilisation de procédure :**
 
@@ -271,21 +256,13 @@ Une procédure est un regroupement de requêtes sql que l'on peut éxécuter ens
   
   - ![](/Users/celian/Desktop/bd_s3/assets/2021-12-29-12-49-28-image.png)
 
-
-
 Les procédure stockées permettent de faciliter le développement mais aussi d'offrir de meilleurs performances / sécurité.
 
 ## 7/ Déclencheurs
 
 Déclenche une procédure à partir d'un certain événement
 
-
-
-
-
 ---
-
-
 
 - [x] Transaction
 
