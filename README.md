@@ -20,6 +20,8 @@
 
 <u>Transaction :</u> Ensemble de requêtes de mise à jour.
 
+<u>Objet</u> : tables, vues, indexes, clusters, synonymes, procédures, ...
+
 ## 1/ Vue
 
  **Synthèse** d'une **requête d'interrogation** de la base sous forme de **table**. 
@@ -55,12 +57,14 @@ SELECT * FROM ToutLeMonde ;
 
 | Vue                | description                                               |
 | ------------------ | --------------------------------------------------------- |
+| `DICTIONARY`       | Vue contenant toutes les vues du dictionnaire             |
 | `ALL_TABLES`       | toutes les tables accessibles par l'utilisateur courant   |
 | `ALL_VIEWS`        | toutes les vues accessible à l'utilisateur courant        |
 | `ALL_TAB_PRIVS`    | Donne pour chaque tables ses privilège d'accès            |
 | `ALL_CONSTRAINTS`  | Donne les contraintes des tables                          |
 | `ALL_CONS_COLUMNS` | Donne toutes les colonnes qui sont liées à une contrainte |
 | `ALL_TAB_COLS`     | Donne toutes les colonnes de toutes les tables            |
+| `USER_OBJECTS`     | Tous les objets de l'utilisateur (Tables / Vues / ... )   |
 
 > Pour avoir des infos sur les colonne d'une table ou d'une vue
 > 
@@ -130,8 +134,6 @@ Le dictionnaire de données contient la vue `ALL_TAB_PRIVS` (All tables privileg
 **Session** : Connexion unique maintenue avec la base de données par un utilisateur.
 
 **Transaction** : Ensemble de requêtes de mise à jour qui sont traitées comme une seule unité.
-
-- 
 
 - Une transaction est un ensemble de changements dans la BD qui ne sont pas encore validés
 
@@ -279,3 +281,22 @@ Les procédure stockées permettent de faciliter le développement mais aussi d'
 Déclenche une procédure à partir d'un certain événement
 
 ---
+
+## 8/ Exemples de requêtes sur le dictionnaire Oracle
+
+
+
+- ```sql
+  select TABLE_NAME from ALL_TABLES 
+  where OWNER = 'ADMIN' order by TABLE_NAME ;
+  ```
+  
+  > Permet de voir toutes les table crées et appartenant à l'utilisateur ADMIN et de les triées par ordre alphabétique
+
+- ```sql
+  select text from ALL_VIEWS;
+  ```
+  
+  > Permet d'afficher le code source de toutes les vues
+
+- 
