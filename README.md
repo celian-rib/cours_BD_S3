@@ -1,8 +1,24 @@
 # Base de données avancées
 
-<u>Base de données</u> : Ensemble d'informations structurées
+
 
 ---
+
+## 0/ Définitions
+
+<u>Base de données</u> : Ensemble d'informations structurées
+
+<u>Table :</u> Ensemble de données du même type.
+
+<u>Index :</u> Structure de données entretenue par le SGBD pour lui permettre de retrouver rapidement ses données. Un index pointe vers une colonne d'une table.
+
+<u>Colonne </u> : Attribut d'une table correspondant à une catégorie d'information
+
+<u>Processus :</u> Programme en cours d'éxécution
+
+<u>Séquence :</u> suite de nombres (Utilisé pour les numéro automatiques)
+
+<u>Transaction :</u> Ensemble de requêtes de mise à jour.
 
 ## 1/ Vue
 
@@ -74,21 +90,21 @@ SELECT * FROM ToutLeMonde ;
 
 - Il existe 4 types de contraintes d'intégrité :
 
-| ID  | Nom                      | Description                                                                                                         |
-| --- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| P   | Primary key              | Définit un attribut comme la clé primaire d'une table                                                               |
-| U   | Unique                   | Interdit à deux linges de la tables d'avoir la même valeurs sur l'attribut référencé comme unique                   |
-| R   | References (Foreign Key) | Oblige un attribut qui référence une autre table à être valide (La clé étrangère doit pointer vers qqch qui existe) |
-| C   | Check                    | Autres types de restrictions sur un attribut                                                                        |
+| ID    | Nom                          | Description                                                                                                         |
+|:-----:|:----------------------------:| ------------------------------------------------------------------------------------------------------------------- |
+| **P** | **Primary key**              | Définit un attribut comme la clé primaire d'une table                                                               |
+| **U** | **Unique** (NOT NULL)        | Interdit à deux linges de la tables d'avoir la même valeurs sur l'attribut référencé comme unique                   |
+| **R** | **References (Foreign Key)** | Oblige un attribut qui référence une autre table à être valide (La clé étrangère doit pointer vers qqch qui existe) |
+| **C** | **Check**                    | Autres types de restrictions sur un attribut                                                                        |
 
 ```sql
 CREATE TABLE Personne (
-    ID CHAR(13) PRIMARY KEY, // contrainte 'P'
-    Nom VARCHAR(25) NOT NULL, // 'C'
-    Prenom VARCHAR(25) NOT NULL, // 'C'
+    ID CHAR(13) PRIMARY KEY, -- contrainte 'P'
+    Nom VARCHAR(25) NOT NULL, -- 'C'
+    Prenom VARCHAR(25) NOT NULL, -- 'C'
     Age INTEGER(3) CHECK (Age BETWEEN 18 AND 65),
-    Mariage CHAR(13) REFERENCES Personne(ID), // 'R'
-    UNIQUE (Nom, Prenom) // 'U'
+    Mariage CHAR(13) REFERENCES Personne(ID), -- 'R'
+    UNIQUE (Nom, Prenom) -- 'U'
 );
 ```
 
@@ -107,15 +123,15 @@ where TABLE_NAME in ( 'PLACE' , 'SEANCE' , 'RESERVATION' )
 order by TABLE_NAME , GRANTOR , GRANTEE , PRIVILEGE ;
 ```
 
-Le dictionnaire de données contient la vue `ALL_TAB_PRIVS`
+Le dictionnaire de données contient la vue `ALL_TAB_PRIVS` (All tables privileges)
 
 ## 5/ Sessions et Transactions
 
 **Session** : Connexion unique maintenue avec la base de données par un utilisateur.
 
-**Transaction** : Ensemble de requêtes de mise à jour qui snt traitées comme une seule unité.
+**Transaction** : Ensemble de requêtes de mise à jour qui sont traitées comme une seule unité.
 
-- Toutes les requête d'une transaction doivent réussir sinon aucune ne sera validé
+- 
 
 - Une transaction est un ensemble de changements dans la BD qui ne sont pas encore validés
 
@@ -263,19 +279,3 @@ Les procédure stockées permettent de faciliter le développement mais aussi d'
 Déclenche une procédure à partir d'un certain événement
 
 ---
-
-- [x] Transaction
-
-- [ ] index
-
-- [ ] requetage
-
-- [ ] plan d'execution
-
-- [x] graphe
-
-- [x] contrainte d'integrité
-
-- [ ] regles de gestion
-
-- [ ] delcencheurs

@@ -243,7 +243,7 @@ revoke INSERT on ETD_RIBOULET_CPV from ETD;
 insert into ETD_RIBOULET.ETD_RIBOULET_CPV values('59000', 'Lille');
 ```
 
-![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-05-15-36-34-image.png)
+![loading-ag-392](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-05-15-36-34-image.png)
 
 ## J/ Définition des données : table, contraintes d'intégrités, index
 
@@ -308,8 +308,6 @@ erDiagram
     }
 ```
 
-
-
 **50)** Inserer des villes
 
 ```sql
@@ -320,5 +318,3 @@ insert into ETD_RIBOULET_CPV values ('31000', 'Toulouse');
 ```
 
 **51)** Insérer distance entre les villes
-
-
