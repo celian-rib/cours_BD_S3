@@ -160,7 +160,7 @@ select * from DBA_SYS_PRIVS where grantee = 'ETD_RIBOULET';
 ```sql
 create table ETD_RIBOULET_CPV (
     CodePostal CHAR(5) NOT NULL,
-    Ville CHAR(30),
+    Ville VARCHAR(30),
     CONSTRAINT PK_RIBOULET_CPV PRIMARY KEY(CodePostal)
 );
 ```
@@ -245,8 +245,80 @@ insert into ETD_RIBOULET.ETD_RIBOULET_CPV values('59000', 'Lille');
 
 ![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-05-15-36-34-image.png)
 
+## J/ Définition des données : table, contraintes d'intégrités, index
+
+> Sur `ETD_RIBOULET`
+
+**49)** Ajouter contrainte d'intégrité sur la colonne Ville de la table `ETD_RIBOULET_CPV`
+
+```sql
+alter table ETD_RIBOULET_CPV modify Ville varchar(30) not null;
+```
+
+```sql
+alter table ETD_RIBOULET_CPV 
+add constraint "EXISTS_RIBOULET_VILLE" check (Ville is not null);
+```
+
+```sql
+insert into ETD_RIBOULET_CPV values ('12348', NULL);
+```
+
+> Erreur
+
+Création de la table `ETD_RIBOULET_DKCLD`
+
+```sql
+create table ETD_RIBOULET_DKCLD (
+    Id number generated always as identity,
+    CPDepart CHAR(5) not null,
+    CPArrivee CHAR(5) not null,
+    DistKm number(5) not null,
+    constraint PK_RIBOULET_DKCLD primary key(Id),
+    constraint FK_RIBOULET_CPDepart 
+        foreign key (CPDepart) references ETD_RIBOULET_CPV(CodePostal),
+    constraint FK_RIBOULET_CPArrivee 
+        foreign key (CPArrivee) references ETD_RIBOULET_CPV(CodePostal),
+    constraint CI_RIBOULET_CPDepartCPArrivee 
+        check (CPDepart < CParrivee),
+    constraint CI_RIBOULET_CPDepart000 
+        check (CPDepart like '%000'),
+    constraint CI_RIBOULET_CPArrivee000 
+        check (CPArrivee like '%000'),
+    constraint UNIQ_RIBOULET_CodePostaux 
+        unique (CPDepart, CPArrivee)
+);
+```
+
+```sql
+create index INDX_RIBOULET_DistKm on ETD_RIBOULET_DKCLD(DistKm);
+```
+
+```mermaid
+erDiagram
+    ETD_RIBOULET_CPV {
+        char CodePostal 
+        char Ville
+    }
+    ETD_RIBOULET_DKCLD ||--o| ETD_RIBOULET_CPV : CPDepart
+    ETD_RIBOULET_DKCLD ||--o| ETD_RIBOULET_CPV : CPArrive
+    ETD_RIBOULET_DKCLD {
+        number id
+        number DistKm 
+    }
+```
 
 
 
+**50)** Inserer des villes
+
+```sql
+insert into ETD_RIBOULET_CPV values ('06000', 'Nice');
+insert into ETD_RIBOULET_CPV values ('13000', 'Marseille');
+insert into ETD_RIBOULET_CPV values ('69000', 'Lyon');
+insert into ETD_RIBOULET_CPV values ('31000', 'Toulouse');
+```
+
+**51)** Insérer distance entre les villes
 
 
