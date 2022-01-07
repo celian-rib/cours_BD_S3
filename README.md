@@ -1,7 +1,5 @@
 # Base de données avancées
 
-
-
 ---
 
 ## 0/ Définitions
@@ -283,8 +281,6 @@ Déclenche une procédure à partir d'un certain événement
 ---
 
 ## 8/ Exemples de requêtes sur le dictionnaire Oracle
-
-
 
 - ```sql
   select TABLE_NAME from ALL_TABLES 
