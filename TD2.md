@@ -308,8 +308,6 @@ erDiagram
     }
 ```
 
-
-
 **50)** Inserer des villes
 
 ```sql
@@ -320,5 +318,126 @@ insert into ETD_RIBOULET_CPV values ('31000', 'Toulouse');
 ```
 
 **51)** Insérer distance entre les villes
+
+```sql
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) values('13000', '33000', 657);
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) values('33000', '69000', 549);
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) values('33000', '75000', 559);
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) values('06000', '75000', 687);
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) values('13000', '75000', 769);
+
+commit;
+```
+
+**52)** Test des contraintes sur `ETD_RIBOULET_DKCLD`
+
+> Toutes les requêtes suivantes ne doivent pas passer
+
+```sql
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) 
+values(null, '33000', 0);
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) 
+values('33000', null, 0);
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) 
+values('06000', '33000', null);
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) 
+values('00000', '33000', 0);
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) 
+values('00000', '99000', 0);
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) 
+values('33175', '69000', 0);
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) 
+values('33000', '33175', 0);
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) 
+values('33000', '06000', 0);
+insert into ETD_RIBOULET_DKCLD (cpdepart, cparrivee, distkm) 
+values('33000', '69000', 0);
+```
+
+**56)** Créer une fonction qui retourne la distance
+
+
+
+```sql
+create or replace function ETD_RIBOULET_DK(cp CHAR)
+return NUMBER
+    is total_km number := 0;
+begin
+    select sum(distkm)
+    into total_km
+    from ETD_RIBOULET_DKCLD
+    where cpdepart = cp or cparrivee = cp;
+    
+    return total_km;
+end;
+```
+
+**57)** Test de la fonction
+
+```sql
+select 
+ETD_RIBOULET_DK('00000'),
+ETD_RIBOULET_DK('33175'),
+ETD_RIBOULET_DK('31000'),
+ETD_RIBOULET_DK('06000'),
+ETD_RIBOULET_DK('13000'),
+ETD_RIBOULET_DK('33000'),
+ETD_RIBOULET_DK('75000'),
+ETD_RIBOULET_DK('69000')
+from DUAL;
+```
+
+> Avec DUAL étant une table contenant une seule ligne => permet d'appeler qu'une seule fois la fonction
+
+**58)** Comphréhension de requêtes
+
+```sql
+select OBJECT_NAME , OBJECT_TYPE 
+from all_procedures where owner = 'ETD_RIBOULET'
+```
+
+> Selectionne tous les objets appartenent à ETD_RIBOULET
+
+**59)** Afficher le code de `ETD_RIBOULET_DK`
+
+```sql
+select * from user_source where type='FUNCTION';
+```
+
+![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-11-11-41-12-image.png)
+
+### L/Déclencheurs
+
+**60)** Créer un déclencheur
+
+```sql
+CREATE OR REPLACE TRIGGER ETD_RIBOULET_CPV_INSERT
+AFTER
+INSERT OR UPDATE
+ON ETD_RIBOULET_CPV
+FOR EACH ROW
+BEGIN
+    IF :new.CODEPOSTAL like '%000' THEN
+          DBMS_OUTPUT.PUT_LINE('Ce chef-lieu de departement doit etre ajoute a la table des distances');
+    END IF;
+END;
+```
+
+**61)** Test du déclencheur
+
+```sql
+insert into ETD_RIBOULET_CPV values ('67000', 'Strasbourg'); // Trigger
+insert into ETD_RIBOULET_CPV values ('44999', 'Nantes'); // Pas trigger
+update ETD_RIBOULET_CPV set CODEPOSTAL = '44000' // Trigger
+where CODEPOSTAL = '44999';
+```
+
+![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-11-12-09-23-image.png)
+
+
+
+### M/ Destruction d'une base de données
+
+> A faire sur feuille
 
 
