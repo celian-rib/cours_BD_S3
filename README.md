@@ -1,8 +1,24 @@
 # Base de données avancées
 
+---
+
+## 0/ Définitions
+
 <u>Base de données</u> : Ensemble d'informations structurées
 
----
+<u>Table :</u> Ensemble de données du même type.
+
+<u>Index :</u> Structure de données entretenue par le SGBD pour lui permettre de retrouver rapidement ses données. Un index pointe vers une colonne d'une table.
+
+<u>Colonne </u> : Attribut d'une table correspondant à une catégorie d'information
+
+<u>Processus :</u> Programme en cours d'éxécution
+
+<u>Séquence :</u> suite de nombres (Utilisé pour les numéro automatiques)
+
+<u>Transaction :</u> Ensemble de requêtes de mise à jour.
+
+<u>Objet</u> : tables, vues, indexes, clusters, synonymes, procédures, ...
 
 ## 1/ Vue
 
@@ -39,12 +55,14 @@ SELECT * FROM ToutLeMonde ;
 
 | Vue                | description                                               |
 | ------------------ | --------------------------------------------------------- |
+| `DICTIONARY`       | Vue contenant toutes les vues du dictionnaire             |
 | `ALL_TABLES`       | toutes les tables accessibles par l'utilisateur courant   |
 | `ALL_VIEWS`        | toutes les vues accessible à l'utilisateur courant        |
 | `ALL_TAB_PRIVS`    | Donne pour chaque tables ses privilège d'accès            |
 | `ALL_CONSTRAINTS`  | Donne les contraintes des tables                          |
 | `ALL_CONS_COLUMNS` | Donne toutes les colonnes qui sont liées à une contrainte |
 | `ALL_TAB_COLS`     | Donne toutes les colonnes de toutes les tables            |
+| `USER_OBJECTS`     | Tous les objets de l'utilisateur (Tables / Vues / ... )   |
 
 > Pour avoir des infos sur les colonne d'une table ou d'une vue
 > 
@@ -74,21 +92,21 @@ SELECT * FROM ToutLeMonde ;
 
 - Il existe 4 types de contraintes d'intégrité :
 
-| ID  | Nom                      | Description                                                                                                         |
-| --- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| P   | Primary key              | Définit un attribut comme la clé primaire d'une table                                                               |
-| U   | Unique                   | Interdit à deux linges de la tables d'avoir la même valeurs sur l'attribut référencé comme unique                   |
-| R   | References (Foreign Key) | Oblige un attribut qui référence une autre table à être valide (La clé étrangère doit pointer vers qqch qui existe) |
-| C   | Check                    | Autres types de restrictions sur un attribut                                                                        |
+| ID    | Nom                          | Description                                                                                                         |
+|:-----:|:----------------------------:| ------------------------------------------------------------------------------------------------------------------- |
+| **P** | **Primary key**              | Définit un attribut comme la clé primaire d'une table                                                               |
+| **U** | **Unique** (NOT NULL)        | Interdit à deux linges de la tables d'avoir la même valeurs sur l'attribut référencé comme unique                   |
+| **R** | **References (Foreign Key)** | Oblige un attribut qui référence une autre table à être valide (La clé étrangère doit pointer vers qqch qui existe) |
+| **C** | **Check**                    | Autres types de restrictions sur un attribut                                                                        |
 
 ```sql
 CREATE TABLE Personne (
-    ID CHAR(13) PRIMARY KEY, // contrainte 'P'
-    Nom VARCHAR(25) NOT NULL, // 'C'
-    Prenom VARCHAR(25) NOT NULL, // 'C'
+    ID CHAR(13) PRIMARY KEY, -- contrainte 'P'
+    Nom VARCHAR(25) NOT NULL, -- 'C'
+    Prenom VARCHAR(25) NOT NULL, -- 'C'
     Age INTEGER(3) CHECK (Age BETWEEN 18 AND 65),
-    Mariage CHAR(13) REFERENCES Personne(ID), // 'R'
-    UNIQUE (Nom, Prenom) // 'U'
+    Mariage CHAR(13) REFERENCES Personne(ID), -- 'R'
+    UNIQUE (Nom, Prenom) -- 'U'
 );
 ```
 
@@ -107,15 +125,13 @@ where TABLE_NAME in ( 'PLACE' , 'SEANCE' , 'RESERVATION' )
 order by TABLE_NAME , GRANTOR , GRANTEE , PRIVILEGE ;
 ```
 
-Le dictionnaire de données contient la vue `ALL_TAB_PRIVS`
+Le dictionnaire de données contient la vue `ALL_TAB_PRIVS` (All tables privileges)
 
 ## 5/ Sessions et Transactions
 
 **Session** : Connexion unique maintenue avec la base de données par un utilisateur.
 
-**Transaction** : Ensemble de requêtes de mise à jour qui snt traitées comme une seule unité.
-
-- Toutes les requête d'une transaction doivent réussir sinon aucune ne sera validé
+**Transaction** : Ensemble de requêtes de mise à jour qui sont traitées comme une seule unité.
 
 - Une transaction est un ensemble de changements dans la BD qui ne sont pas encore validés
 
@@ -264,18 +280,19 @@ Déclenche une procédure à partir d'un certain événement
 
 ---
 
-- [x] Transaction
+## 8/ Exemples de requêtes sur le dictionnaire Oracle
 
-- [ ] index
+- ```sql
+  select TABLE_NAME from ALL_TABLES 
+  where OWNER = 'ADMIN' order by TABLE_NAME ;
+  ```
+  
+  > Permet de voir toutes les table crées et appartenant à l'utilisateur ADMIN et de les triées par ordre alphabétique
 
-- [ ] requetage
+- ```sql
+  select text from ALL_VIEWS;
+  ```
+  
+  > Permet d'afficher le code source de toutes les vues
 
-- [ ] plan d'execution
-
-- [x] graphe
-
-- [x] contrainte d'integrité
-
-- [ ] regles de gestion
-
-- [ ] delcencheurs
+- 

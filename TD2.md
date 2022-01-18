@@ -243,7 +243,7 @@ revoke INSERT on ETD_RIBOULET_CPV from ETD;
 insert into ETD_RIBOULET.ETD_RIBOULET_CPV values('59000', 'Lille');
 ```
 
-![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-05-15-36-34-image.png)
+![loading-ag-392](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-05-15-36-34-image.png)
 
 ## J/ Définition des données : table, contraintes d'intégrités, index
 
@@ -356,18 +356,17 @@ values('33000', '69000', 0);
 
 **56)** Créer une fonction qui retourne la distance
 
-
-
 ```sql
 create or replace function ETD_RIBOULET_DK(cp CHAR)
 return NUMBER
     is total_km number := 0;
 begin
-    select sum(distkm)
-    into total_km
+    if CP is null then
+        return null;
+    end if;
+    select sum(distkm) into total_km
     from ETD_RIBOULET_DKCLD
     where cpdepart = cp or cparrivee = cp;
-    
     return total_km;
 end;
 ```
@@ -411,14 +410,20 @@ select * from user_source where type='FUNCTION';
 **60)** Créer un déclencheur
 
 ```sql
-CREATE OR REPLACE TRIGGER ETD_RIBOULET_CPV_INSERT
+set serveroutput on
+```
+
+> Permet de faire fonctionner `DBMS_OUTPUT.PUT_LINE` du trigger
+
+```sql
+create or replace TRIGGER ETD_RIBOULET_CPV_INSERT
 AFTER
 INSERT OR UPDATE
 ON ETD_RIBOULET_CPV
 FOR EACH ROW
 BEGIN
     IF :new.CODEPOSTAL like '%000' THEN
-          DBMS_OUTPUT.PUT_LINE('Ce chef-lieu de departement doit etre ajoute a la table des distances');
+        DBMS_OUTPUT.PUT_LINE('Ce chef-lieu de departement doit etre ajoute a la table des distances');
     END IF;
 END;
 ```
@@ -434,10 +439,58 @@ where CODEPOSTAL = '44999';
 
 ![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-11-12-09-23-image.png)
 
-
-
 ### M/ Destruction d'une base de données
 
-> A faire sur feuille
+**63)** Retirer à `ETD` les privilèges objets `SELECT` et `INSERT` sur la table `ETD_RIBOULET_CPV` 
 
+```sql
+revoke SELECT, INSERT on ETD_RIBOULET_CPV from ETD
+```
 
+Supprimer les privilèges select sur `ETD_RIBOULET_CPV_GIRONDE`
+
+```sql
+revoke SELECT on ETD_RIBOULET_CPV_GIRONDE from ETD
+```
+
+**64)** Supprimer toutes les données de `ETD_RIBOULET_DKCLD` et `ETD_RIBOULET_CPV`
+
+```sql
+delete from ETD_RIBOULET_DKCLD;
+delete from ETD_RIBOULET_CPV;
+commit;
+```
+
+**65)** 
+
+![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-13-10-55-23-image.png)
+
+**66)** Détruire le déclencheur `ETD_RIBOULET_CPV_INSERT`
+
+```sql
+drop trigger ETD_RIBOULET_CPV_INSERT;
+```
+
+**67)** Détruire la fonction `ETD_RIBOULET_DK`
+
+```sql
+drop function ETD_RIBOULET_DK;
+```
+
+**68)** Détruire la vue `ETD_RIBOULET_CPV_GIRONDE`
+
+```sql
+drop view ETD_RIBOULET_CPV_GIRONDE;
+```
+
+**69)** Détruire l'index `NDX_RIBOULET_DistKm`
+
+```sql
+drop index INDX_RIBOULET_DistKm;
+```
+
+**70)** Détruire la table et ses contraintes en cascade `ETD_RIBOULET_DKCLD`
+
+```sql
+
+```

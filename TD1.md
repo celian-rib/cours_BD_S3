@@ -275,7 +275,7 @@ select s.sid, s.lockwait, s.blocking_session, s.final_blocking_session from v$se
 
 <u>Transaction :</u> Ensemble de requêtes de mise à jour.
 
-<u>Utilisateur :</u> Quelqu'un qui a des droits (Compte).
+<u>Transaction :</u> Ensemble de requêtes de mise à jour.
 
 <u>Vue :</u> une synthèse d'une requête d'interrogation de la base (Table virtuelle, définir par une requête)
 
