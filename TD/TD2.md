@@ -104,15 +104,15 @@ create user ETD_RIBOULET identified by ETD_RIBOULET;
 select * from ALL_USERS where username = 'ETD_RIBOULET';
 ```
 
-![](./assets/2022-01-05-14-20-35-image.png)
+![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-05-14-20-35-image.png)
 
 **11)** Connexion au nouvel utilisateur
 
-![](./assets/2022-01-05-14-24-14-image.png)
+![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-05-14-24-14-image.png)
 
 Mais l'utilisateur na pas les droits de se connecter
 
-![](./assets/2022-01-05-14-27-30-image.png)
+![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-05-14-27-30-image.png)
 
 ## D) Attribution de privilièges
 
@@ -145,7 +145,7 @@ TO ETD_RIBOULET;
 select * from DBA_SYS_PRIVS where grantee = 'ETD_RIBOULET';
 ```
 
-![](./assets/2022-01-05-14-40-23-image.png)
+![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-05-14-40-23-image.png)
 
 **15)** Ouvrir une connexion avec `ETD_CRIBOULET`
 
@@ -219,7 +219,7 @@ commit
 select * from ETD_RIBOULET.ETD_RIBOULET_CPV;
 ```
 
-![](./assets/2022-01-05-15-21-41-image.png)
+![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-05-15-21-41-image.png)
 
 **24)** Récupérer toutes les villes de gironde
 
@@ -227,7 +227,7 @@ select * from ETD_RIBOULET.ETD_RIBOULET_CPV;
 select * from ETD_RIBOULET.ETD_RIBOULET_CPV_GIRONDE;
 ```
 
-![](./assets/2022-01-05-15-27-30-image.png)
+![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-05-15-27-30-image.png)
 
 **25)** Retirer les privilèges à un utilisateur
 
@@ -243,7 +243,7 @@ revoke INSERT on ETD_RIBOULET_CPV from ETD;
 insert into ETD_RIBOULET.ETD_RIBOULET_CPV values('59000', 'Lille');
 ```
 
-![loading-ag-392](./assets/2022-01-05-15-36-34-image.png)
+![loading-ag-392](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-05-15-36-34-image.png)
 
 ## J/ Définition des données : table, contraintes d'intégrités, index
 
