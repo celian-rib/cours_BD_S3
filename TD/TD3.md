@@ -9,7 +9,7 @@ select *
 from FILM;
 ```
 
-![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-13-11-19-19-image.png)
+![](./assets/2022-01-13-11-19-19-image.png)
 
 ```sql
 select NOM_REALISATEUR , PRENOM_REALISATEUR
@@ -19,15 +19,13 @@ select TITRE_FILM , GENRE
 from FILM
 ```
 
-![](/mnt/roost/users/criboulet/Documents/bd/TD/assets/2022-01-18-10-43-20-image.png)
+![](./assets/2022-01-18-10-43-20-image.png)
 
 > UnionAll => union mais on garde les doublons
 
-
-
 **3)** Requête correspondant au plan d'éxécution suivant
 
-![](/mnt/roost/users/criboulet/Documents/bd/assets/2022-01-18-10-33-15-image.png)
+![](./assets/2022-01-18-10-33-15-image.png)
 
 ```sql
 select count(*) from film
@@ -44,46 +42,19 @@ having sum(film.duree) / count(film.duree) >= 100 or count(*) = 2
 **6)** Commentez les requêtes 
 
 ```sql
+explain plan for
 select PRENOM_REALISATEUR
-
+from REALISATEUR
 ```
 
+```sql
+select * from TABLE(DBMS_XPLAN.DISPLAY)
+```
+
+![](./TD/assets/2022-01-19-14-15-04-image.png)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**8)** Analyse de tables et indexes
 
 
