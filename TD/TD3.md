@@ -51,7 +51,7 @@ from REALISATEUR
 select * from TABLE(DBMS_XPLAN.DISPLAY)
 ```
 
-![](./TD/assets/2022-01-19-14-15-04-image.png)
+![](./assets/2022-01-19-14-15-04-image.png)
 
 
 
