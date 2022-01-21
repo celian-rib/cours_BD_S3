@@ -2,9 +2,9 @@
 
 Résumé DS 2 : [[FONCTIONS / TRIGGER / PERMS / CREATE]](./cheat_sheet.md)
 
-[[DS2 2020-21]](./DS/2/DS2_2020.md)
+[[correction DS2 2020-21]](./DS/2/DS2_2020.md)
 
-[[DS2 2019-20]](./DS/2/DS2_2019.md)
+[[correction DS2 2019-20]](./DS/2/DS2_2019.md)
 
 ---
 
