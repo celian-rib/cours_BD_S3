@@ -1,5 +1,7 @@
 # Base de données avancées
 
+Résumé DS 2 : [[FONCTIONS / TRIGGER / PERMS / CREATE]](./cheat_sheet.md)
+
 [[DS2 2020-21]](./DS/2/DS2_2020.md)
 
 [[DS2 2019-20]](./DS/2/DS2_2019.md)
@@ -117,6 +119,8 @@ CREATE TABLE Personne (
 ---
 
 ## 4/ Privilèges
+
+[[VOIR CHEAT_SHEET_DS2]](./cheat_sheet.md)
 
 Autorisation donnée à un utilisateur de la BD.
 
@@ -256,7 +260,7 @@ flowchart LR
 
 Une procédure est un regroupement de requêtes sql que l'on peut éxécuter ensembles. 
 
-> Voir ça comme un script bah qui lui peut éxécuter plusieurs commande bash, ici c'est pareil mais avec des requêtes sql.
+> Voir ça comme un script bash qui lui peut éxécuter plusieurs commande bash, ici c'est pareil mais avec des requêtes sql.
 
 > A la manière d'une fonction ou d'un scritp bash, une procèdure peut prendre des arguments et simplement être appelée pour être éxécutée.
 
@@ -280,23 +284,21 @@ Les procédure stockées permettent de faciliter le développement mais aussi d'
 
 ## 7/ Déclencheurs
 
+[[VOIR CHEAT_SHEET_DS2]](./cheat_sheet.md)
+
 Déclenche une procédure à partir d'un certain événement
 
+```sql
+create or replace TRIGGER ETD_RIBOULET_CPV_ISERT
+AFTER
+INSERT OR UPDATE
+ON ETD_RIBOULET_CPV
+FOR EACH ROW
+BEGIN
+    IF :new.CODEPOSTAL like '%000' THEN
+        DBMS_OUTPUT.PUT_LINE('Ce chef-lieu de departement doit etre ajoute a la table des distances');
+    END IF;
+END;
+```
+
 ---
-
-## 8/ Exemples de requêtes sur le dictionnaire Oracle
-
-- ```sql
-  select TABLE_NAME from ALL_TABLES 
-  where OWNER = 'ADMIN' order by TABLE_NAME ;
-  ```
-  
-  > Permet de voir toutes les table crées et appartenant à l'utilisateur ADMIN et de les triées par ordre alphabétique
-
-- ```sql
-  select text from ALL_VIEWS;
-  ```
-  
-  > Permet d'afficher le code source de toutes les vues
-
-- 
