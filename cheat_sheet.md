@@ -260,3 +260,82 @@ end;
 ```
 
 > Cette fonction permet de supprimer tous les élèments d'une table et retourne le nombre d'élèments supprimés.
+
+---
+
+## 6/ Plans d'execution
+
+- **Exemple très simple** :
+
+![](./assets/2022-01-21-22-22-57-image.png)
+
+```sql
+select NOM_INDIV from INDIVIDU
+where NOM_INDIV LIKE 'L%'
+```
+
+- **Exemple détaillé** :
+
+![](./DS/2/assets/2022-01-20-19-39-25-image.png)
+
+```sql
+select LGE_NOM, count(*)
+from T_LANGAGE_LGE
+where LGE_NOM like '%O_O%' and (LGE_ID<24 or LGE_ID>64)
+group by LGE_NOM
+having count(*) = 1 or count(*) = 2 or count(*) = 4 or count(*) = 8 
+order by count(*);
+```
+
+> Chaque élèments en bleu dans le plan d'éxécution devra être dans la requête
+
+- Etape 1- (Identifier la table)
+  
+  - Sur qu'elle table on select ?
+    
+    - ![](./DS/2/assets/2022-01-21-21-31-18-image.png)
+  
+  - On a donc :
+    
+    - ```sql
+      select ???? from T_LANGAGE_LGE
+      ```
+
+- Etape 2 - (Clause where)
+  
+  - Qu'est ce qu'on va filtrer ?
+    
+    - ![](./DS/2/assets/2022-01-21-21-32-58-image.png)
+  
+  - On a donc :
+    
+    - ```sql
+      select ???? from T_LANGAGE_LGE
+      where LGE_NOM like '%O_O%' and (LGE_ID<24 or LGE_ID>64)
+      ```
+
+- Etape 3 - (Se charger du group by)
+  
+  - Ca se complique, il faut trouver par quoi on va group by.
+    
+    - Ici un groupe by par nom
+  
+  - On a donc :
+    
+    - ```sql
+      select ???? from T_LANGAGE_LGE
+      where LGE_NOM like '%O_O%' and (LGE_ID<24 or LGE_ID>64)
+      group by LGE_NOM
+      ```
+
+- Etape 4 - (having)
+  
+  - On sait qu'il y a un having
+    
+    - ![](./DS/2/assets/2022-01-21-21-37-53-image.png)
+    
+    - > Les comparaison avec des count(*) ne se font que dans des having
+
+- Etape 5 - (Ajouter le order by et le select)
+  
+  - les deux sont determinable par le group by

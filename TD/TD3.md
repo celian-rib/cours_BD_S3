@@ -53,8 +53,4 @@ select * from TABLE(DBMS_XPLAN.DISPLAY)
 
 ![](./assets/2022-01-19-14-15-04-image.png)
 
-
-
 **8)** Analyse de tables et indexes
-
-
