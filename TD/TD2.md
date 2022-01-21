@@ -388,7 +388,7 @@ from DUAL;
 
 > Avec DUAL étant une table contenant une seule ligne => permet d'appeler qu'une seule fois la fonction
 
-**58)** Comphréhension de requêtes
+**58)** Compréhension de requêtes
 
 ```sql
 select OBJECT_NAME , OBJECT_TYPE 

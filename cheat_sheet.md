@@ -1,5 +1,7 @@
 ## BD Cheat Sheet
 
+> Tout ce qu'il faut apprendre par <3
+
 ---
 
 ## 0/ Types
@@ -11,6 +13,8 @@
 | `char(x)`    | String de x caractères (Pas plus pas moins)              |
 | `varchar(x)` | String de 1 à X caractères                               |
 | `date`       | Date                                                     |
+
+---
 
 ## 1/ Create table
 
@@ -29,8 +33,21 @@ create table NOM_TABLE (
 | Clé étrangère             | `constraint NOM foreign key (COLONNE) references AUTRE_TABLE(COLONNE_AUTRE_TABLE)` |
 | Unicité                   | `constraint NOM unique (COLONNE)`                                                  |
 | Unicité couple de colonne | `constraint NOM unique (COLONNE1, COLONNE2)`                                       |
+| Check                     | `constraint NOM check (<expression booléenne>)`                                    |
 
-Exemple :
+- **Auto incrémentation** :
+
+![](./assets/2022-01-21-21-59-32-image.png)
+
+- **Exemples** :
+
+```sql
+create table ETD_RIBOULET_CPV (
+    CodePostal CHAR(5) NOT NULL,
+    Ville VARCHAR(30),
+    CONSTRAINT PK_RIBOULET_CPV PRIMARY KEY(CodePostal)
+);
+```
 
 ```sql
 create table T_LANGAGE_LGE (
@@ -45,15 +62,41 @@ create table T_LANGAGE_LGE (
 );
 ```
 
+```sql
+create table ETD_RIBOULET_DKCLD (
+    Id number generated always as identity,
+    CPDepart CHAR(5) not null,
+    CPArrivee CHAR(5) not null,
+    DistKm number(5) not null,
+    constraint PK_RIBOULET_DKCLD primary key(Id),
+    constraint FK_RIBOULET_CPDepart 
+        foreign key (CPDepart) references ETD_RIBOULET_CPV(CodePostal),
+    constraint FK_RIBOULET_CPArrivee 
+        foreign key (CPArrivee) references ETD_RIBOULET_CPV(CodePostal),
+    constraint CI_RIBOULET_CPDepartCPArrivee 
+        check (CPDepart < CParrivee),
+    constraint CI_RIBOULET_CPDepart000 
+        check (CPDepart like '%000'),
+    constraint CI_RIBOULET_CPArrivee000 
+        check (CPArrivee like '%000'),
+    constraint UNIQ_RIBOULET_CodePostaux 
+        unique (CPDepart, CPArrivee)
+);
+```
+
+---
+
 ## 2/ Create user
 
 ```sql
 create user UN_UTILISATEUR identified by LE_MDP;
 ```
 
+---
+
 ## 3/  Grant & Revoke
 
-- Droits sur la base de donnée :
+- **Donner des privilèges systèmes :**
 
 ```sql
 grant <PERM>, <PERM> to <USER>
@@ -70,7 +113,7 @@ CREATE TRIGGER
 to U256;
 ```
 
-- Droits sur une table
+- **Droits sur une table**
 
 ```sql
 grant <PERM>, <PERM> on <TABLE> to <USER>;
@@ -80,15 +123,31 @@ grant <PERM>, <PERM> on <TABLE> to <USER>;
 grant select, insert, alter on VILLES to UN_UTILISATEUR;
 ```
 
-- Enlever droits sur une table
+- **Enlever droits sur une table**
 
 ```sql
 revoke <PERM> <PERM> on <TABLE> from <USER>
 ```
 
-## 3/ Trigger
+- **Voir les privilèges systemes d'un utilisateur**
 
-> :new permet de récupérer l'élèment qui va subir l'action (l'èlement que l'on va insert par exemple)
+```sql
+select * from DBA_SYS_PRIVS where grantee = 'UN_USER';
+```
+
+- **Voir les privilèges objets d'un utilisateur**
+
+```sql
+select * from DBA_TAB_PRIVS where grantee = 'UN_USER';
+```
+
+ ---
+
+## 4/ Trigger
+
+> A SQL trigger is **a database object which fires when an event occurs in a database**. We can execute a SQL query that will "do something" in a database when a change occurs on a database table such as a record is inserted or updated or deleted.
+
+> `:new` permet de récupérer l'élèment qui va subir l'action (l'èlement que l'on va insert par exemple)
 
 - Structure simple :
 
@@ -131,6 +190,16 @@ begin
 end;
 ```
 
+- Appeler une fonction :
+
+```sql
+select 
+MA_FONCTION()
+from DUAL;
+```
+
+> Dual étant une table spéciale avec 1 seule ligne
+
 - Exemple ([DS 2020-21](./DS/2/DS2_2020.md))
 
 ```sql
@@ -155,9 +224,13 @@ begin
 end;
 ```
 
-## 4/ Function
+---
 
-- Structure :
+## 5/ Function
+
+> routine that accepts parameters, performs an action, such as a complex calculation, and returns the result of that action as a value
+
+- **Structure simple** :
 
 ```sql
 create or replace function NOM_FONCTION(<PARAM> <TYPE_PARAM>)
@@ -170,7 +243,7 @@ begin
 end;
 ```
 
-- Exemple ([DS 2019-20](./DS/2/DS2_2019.md)):
+- **Exemple** ([DS 2019-20](./DS/2/DS2_2019.md)):
 
 ```sql
 create or replace function PURG_CHANGE_LOC()
@@ -185,3 +258,5 @@ begin
     return total_purged;
 end;
 ```
+
+> Cette fonction permet de supprimer tous les élèments d'une table et retourne le nombre d'élèments supprimés.
