@@ -93,7 +93,7 @@ revoke <PERM> <PERM> on <TABLE> from <USER>
 - Structure simple :
 
 ```sql
-create or replace <TRIG_NAME>
+create or replace trigger <TRIG_NAME>
 <before/after> <ACTION> or <ACTION>
 on <TABLE_CONCERNEE>
 for each row
@@ -105,7 +105,7 @@ end;
 - Avec une précondition (when):
 
 ```sql
-create or replace <TRIG_NAME>
+create or replace trigger <TRIG_NAME>
 <before/after> <ACTION> or <ACTION>
 on <TABLE_CONCERNEE>
 for each row
@@ -118,7 +118,7 @@ end;
 - Variables du trigger :
 
 ```sql
-create or replace <TRIG_NAME>
+create or replace trigger <TRIG_NAME>
 <before/after> <ACTION> or <ACTION>
 on <TABLE_CONCERNEE>
 for each row
